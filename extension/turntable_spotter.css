@@ -11,11 +11,21 @@ h1 {
   font-size: 24px;
 }
 
+.hidden {
+  display: none;
+}
+
 #page {
   padding: 1em;
 }
 
 #track-list {
+}
+
+#track-list li + li {
+  margin-top: 5px;
+  padding-top: 5px;
+  border-top: 1px solid #ddd;
 }
 
 #track-list .title {
@@ -26,5 +36,6 @@ h1 {
 #track-list .artist {
   display: block;
   font-size: 12px;
+  margin-top: 5px;
   text-transform: uppercase;
 }
