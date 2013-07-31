@@ -15,6 +15,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-42849115-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script');
+  ga.type = 'text/javascript';
+  ga.async = true;
+  ga.src = 'https://ssl.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0];
+  s.parentNode.insertBefore(ga, s);
+})();
+
 var turntable_spotter_popup = {
   get_spotify_track_search_url: function(query) {
     return 'http://ws.spotify.com/search/1/track.json?q=' +
