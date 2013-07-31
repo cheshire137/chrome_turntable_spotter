@@ -21,7 +21,12 @@ var turntable_spotter_popup = {
     for (var i=0; i<tracks.length; i++) {
       var track = tracks[i];
       var li = $('<li></li>');
-      li.text(track.title);
+      var title_span = $('<span class="title"></span>');
+      title_span.text(track.title);
+      li.append(title_span);
+      var artist_span = $('<span class="artist"></span>');
+      artist_span.text(track.artist);
+      li.append(artist_span);
       track_list.append(li);
     }
   }

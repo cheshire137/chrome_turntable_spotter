@@ -17,3 +17,14 @@ h1 {
 
 #track-list {
 }
+
+#track-list .title {
+  font-size: 14px;
+  display: block;
+}
+
+#track-list .artist {
+  display: block;
+  font-size: 12px;
+  text-transform: uppercase;
+}
