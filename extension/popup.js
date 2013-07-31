@@ -26,8 +26,19 @@ var turntable_spotter_popup = {
     return 'spotify:trackset:' + name + ':' + joined_ids;
   },
 
-  update_trackset_url: function() {
+  set_trackset_link: function() {
     var link = $('a[href="#open-tracklist"]');
+    var track_ids = [];
+    $('#track-list .track-link').each(function() {
+      var track_id = $(this).attr('href').split('spotify:track:')[1];
+      track_ids.push(track_id);
+    });
+    var trackset_url = this.get_spotify_trackset_url('Turntable.fm', track_ids);
+    link.click(function() {
+      chrome.tabs.create({url: trackset_url});
+      return false;
+    });
+    link.parent().show();
   },
 
   get_track_list_item: function(track) {
@@ -37,19 +48,16 @@ var turntable_spotter_popup = {
              artist + '"]');
   },
 
-  set_spotify_link: function(track) {
+  set_track_link: function(track, is_last) {
     var query = track.title + ' ' + track.artist;
     var url = this.get_spotify_track_search_url(query);
     var me = this;
     $.getJSON(url, function(data) {
-      console.log(url);
-      console.log(data);
       if (data && data.info && data.info.num_results > 0) {
         var spotify_url = data.tracks[0].href;
-        console.log(spotify_url);
         var list_item = me.get_track_list_item(track);
-        console.log(list_item);
-        var spotify_link = $('<a href="#open-track"></a>');
+        var spotify_link = $('<a href="' + spotify_url +
+                             '" class="track-link"></a>');
         spotify_link.click(function() {
           chrome.tabs.create({url: spotify_url});
           return false;
@@ -57,21 +65,16 @@ var turntable_spotter_popup = {
         spotify_link.append(list_item.children().detach());
         list_item.append(spotify_link);
       }
+      if (is_last) {
+        me.set_trackset_link();
+      }
     });
   },
 
   set_spotify_links: function(tracks) {
-    // this.get_spotify_track_ids(tracks, function(track_ids) {
-    //   var trackset_url = this.get_spotify_trackset_url('Turntable.fm',
-    //                                                    track_ids);
-    //   link.click(function() {
-    //     chrome.tabs.create({url: trackset_url});
-    //     return false;
-    //   });
-    //   link.parent().show();
-    // });
-    for (var i=0; i<tracks.length; i++) {
-      this.set_spotify_link(tracks[i]);
+    var num_tracks = tracks.length;
+    for (var i=0; i<num_tracks; i++) {
+      this.set_track_link(tracks[i], i == num_tracks - 1);
     }
   },
 
