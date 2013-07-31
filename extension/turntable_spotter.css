@@ -11,25 +11,38 @@ a:hover, a:focus {
 body {
   font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
   min-width: 20em;
+  color: #444;
+  background-color: #f8f8f8;
 }
 
 h1 {
-  background: url('icon48.png') no-repeat left center;
-  padding-left: 56px;
-  min-height: 48px;
-  line-height: 48px;
+  line-height: 36px;
   font-size: 24px;
+  color: #999;
+}
+
+h2 {
+  text-align: center;
+  font-size: 24px;
+  margin: 10px 0;
 }
 
 .hidden {
   display: none;
 }
 
+#logo {
+  width: 36px;
+  vertical-align: middle;
+  display: inline-block;
+}
+
 #page {
-  padding: 1em;
+  padding: 0.5em;
 }
 
 #track-list {
+  font-size: 12px;
 }
 
 #track-list li + li {
@@ -45,7 +58,22 @@ h1 {
 
 #track-list .artist {
   display: block;
-  font-size: 12px;
+  font-size: 10px;
   margin-top: 5px;
+  color: #494949;
   text-transform: uppercase;
+}
+
+#trackset-link {
+  background-color: #74b033;
+  color: white;
+  padding: 0.4em;
+  display: block;
+  border-radius: 4px;
+  text-decoration: none;
+}
+
+#trackset-link:hover, #trackset-link:focus {
+  text-decoration: none;
+  background-color: #a9cf40;
 }

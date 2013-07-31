@@ -84,6 +84,7 @@ var turntable_spotter_popup = {
 
   populate_track_list: function(tracks) {
     var track_list = $('#track-list');
+    track_list.empty();
     for (var i=0; i<tracks.length; i++) {
       var track = tracks[i];
       var li = $('<li></li>');
