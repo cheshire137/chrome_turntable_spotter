@@ -1,0 +1,9 @@
+body {
+  font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+}
+
+h1 {
+  background: url('icon48.png') no-repeat left center;
+  padding-left: 52px;
+  min-height: 48px;
+}
