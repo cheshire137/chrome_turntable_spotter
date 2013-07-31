@@ -16,5 +16,58 @@
  */
 
 var turntable_spotter = {
+  get_room_tab: function() {
+    console.log('get_room_tab');
+    var tabs = $('.tabbed-panel .tabbed-panel-tab');
+    var room_tab = false;
+    tabs.each(function() {
+      var tab = $(this);
+      if ($('.tab-title', tab).text() == 'Room') {
+        room_tab = tab;
+        return;
+      }
+    });
+    console.log(room_tab);
+    return room_tab;
+  },
 
+  load_room_tab: function() {
+    console.log('load_room_tab');
+    var room_tab = this.get_room_tab();
+    console.log($('.tab-item', room_tab));
+    $('.tab-item', room_tab).trigger('click');
+  },
+
+  load_recent_songs: function() {
+    console.log('load_recent_songs');
+    this.load_room_tab();
+    $('.room-tab .recently-played-link').trigger('click');
+  },
+
+  extract_track_list: function() {
+    console.log('extract_track_list');
+    var song_elements = $('.room-tab .song-list .song');
+    console.log(song_elements);
+    var tracks = [];
+    song_elements.each(function() {
+      var song_el = $(this);
+      var title = $('.title', song_el).text();
+      tracks.push({title: title});
+    });
+    console.log(tracks);
+    return tracks;
+  },
+
+  on_popup_opened: function(tab_id, callback) {
+    console.log('popup opened');
+    this.load_recent_songs();
+    callback(this.extract_track_list());
+  }
 };
+
+chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
+  if (request.greeting == 'popup_opened') {
+    turntable_spotter.on_popup_opened(request.tab_id, function(data) { sendResponse(data);
+    });
+  }
+});

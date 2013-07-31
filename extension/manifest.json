@@ -9,9 +9,7 @@
   "content_scripts": [
     {
       "all_frames": true,
-      "matches": ["*://*.reddit.com/*", "*://*.redd.it/*",
-                  "*://*.youtube.com/*", "*://*.youtu.be/*", "*://reddit.com/*",
-                  "*://redd.it/*", "*://youtube.com/*", "*://youtu.be/*"],
+      "matches": ["*://*.turntable.fm/*"],
       "js": ["jquery-2.0.3.min.js", "content_script.js"]
     }
   ],
