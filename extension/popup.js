@@ -39,19 +39,40 @@ var turntable_spotter_popup = {
     return 'spotify:trackset:' + name + ':' + joined_ids;
   },
 
-  set_trackset_link: function() {
-    var link = $('a[href="#open-tracklist"]');
+  get_spotify_trackset_web_url: function(name, track_ids) {
+    var joined_ids = track_ids.join(',');
+    return 'https://play.spotify.com/trackset/' + encodeURIComponent(name) +
+           '/' + joined_ids;
+  },
+
+  get_spotify_track_id: function(app_url) {
+    return app_url.split('spotify:track:')[1];
+  },
+
+  get_spotify_track_web_url: function(app_url) {
+    return 'https://play.spotify.com/track/' +
+           this.get_spotify_track_id(app_url);
+  },
+
+  set_trackset_link: function(spotify_choice) {
+    var link = $('a#trackset-link');
     var track_ids = [];
     $('#track-list .track-link').each(function() {
-      var track_id = $(this).attr('href').split('spotify:track:')[1];
+      var track_id = $(this).attr('data-spotify').split('spotify:track:')[1];
       track_ids.push(track_id);
     });
-    var trackset_url = this.get_spotify_trackset_url('Turntable.fm', track_ids);
+    var trackset_name = 'Turntable.fm';
+    var trackset_url = this.get_spotify_trackset_url(trackset_name, track_ids);
+    var web_url = this.get_spotify_trackset_web_url(trackset_name, track_ids);
     link.click(function() {
-      chrome.tabs.create({url: trackset_url});
+      if (spotify_choice === 'desktop_application') {
+        chrome.tabs.create({url: trackset_url});
+      } else {
+        chrome.tabs.create({url: web_url});
+      }
       return false;
     });
-    link.parent().show();
+    link.show();
   },
 
   get_track_list_item: function(track) {
@@ -61,33 +82,40 @@ var turntable_spotter_popup = {
              artist + '"]');
   },
 
-  set_track_link: function(track, is_last) {
+  set_track_link: function(track, is_last, spotify_choice) {
     var query = track.title + ' ' + track.artist;
     var url = this.get_spotify_track_search_url(query);
     var me = this;
     $.getJSON(url, function(data) {
       if (data && data.info && data.info.num_results > 0) {
         var spotify_url = data.tracks[0].href;
+        var web_url = me.get_spotify_track_web_url(spotify_url);
         var list_item = me.get_track_list_item(track);
-        var spotify_link = $('<a href="' + spotify_url +
+        var spotify_link = $('<a href="' + web_url +
+                             '" data-spotify="' + spotify_url +
                              '" class="track-link"></a>');
         spotify_link.click(function() {
-          chrome.tabs.create({url: spotify_url});
+          if (spotify_choice === 'desktop_application') {
+            chrome.tabs.create({url: spotify_url});
+          } else {
+            chrome.tabs.create({url: web_url});
+          }
           return false;
         });
         spotify_link.append(list_item.children().detach());
         list_item.append(spotify_link);
       }
       if (is_last) {
-        me.set_trackset_link();
+        me.set_trackset_link(spotify_choice);
       }
     });
   },
 
-  set_spotify_links: function(tracks) {
+  set_spotify_links: function(tracks, spotify_choice) {
+    $('a#trackset-link').hide();
     var num_tracks = tracks.length;
     for (var i=0; i<num_tracks; i++) {
-      this.set_track_link(tracks[i], i == num_tracks - 1);
+      this.set_track_link(tracks[i], i == num_tracks - 1, spotify_choice);
     }
   },
 
@@ -113,9 +141,26 @@ var turntable_spotter_popup = {
     }
   },
 
+  setup_options_link: function() {
+    $('a[href="#options"]').click(function() {
+      chrome.tabs.create({url: chrome.extension.getURL("options.html")});
+      return false;
+    });
+  },
+
   populate_popup: function(tracks) {
-    this.set_spotify_links(tracks);
     this.populate_track_list(tracks);
+    var me = this;
+    chrome.storage.sync.get('turntable_spotter_options', function(opts) {
+      opts = opts.turntable_spotter_options || {};
+      var spotify_choice = opts.spotify || 'web_player';
+      me.set_spotify_links(tracks, spotify_choice);
+    });
+  },
+
+  on_popup_opened: function(tracks) {
+    this.setup_options_link();
+    this.populate_popup(tracks);
   }
 };
 
@@ -125,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function() {
       tab.id,
       {greeting: 'popup_opened', tab_id: tab.id},
       function(tracks) {
-        turntable_spotter_popup.populate_popup(tracks);
+        turntable_spotter_popup.on_popup_opened(tracks);
       }
     );
   });

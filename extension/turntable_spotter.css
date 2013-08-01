@@ -10,21 +10,28 @@ a:hover, a:focus {
 
 body {
   font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  font-weight: 300;
+  line-height: 1.6;
   min-width: 20em;
   color: #444;
   background-color: #f8f8f8;
+}
+
+footer {
+  background-color: #F8F8F8;
+  padding: 10px;
+  text-align: center;
+}
+
+footer a {
+  display: inline;
 }
 
 h1 {
   line-height: 36px;
   font-size: 24px;
   color: #999;
-}
-
-h2 {
-  text-align: center;
-  font-size: 24px;
-  margin: 10px 0;
+  margin-bottom: 10px;
 }
 
 .hidden {
@@ -39,6 +46,10 @@ h2 {
 
 #page {
   padding: 0.5em;
+}
+
+small {
+  font-size: 12px;
 }
 
 #track-list {
@@ -67,10 +78,13 @@ h2 {
 #trackset-link {
   background-color: #74b033;
   color: white;
+  margin: 0 0 10px 0;
   padding: 0.4em;
   display: block;
   border-radius: 4px;
   text-decoration: none;
+  text-align: center;
+  font-size: 24px;
 }
 
 #trackset-link:hover, #trackset-link:focus {
