@@ -8,7 +8,7 @@ desktop application.
 
 ## Screenshots
 
-![Screenshot of Turntable Spotter](http://github.com/moneypenny/chrome_turntable_spotter/raw/master/screenshot.png)
+![Screenshot of Turntable Spotter](https://raw.githubusercontent.com/cheshire137/chrome_turntable_spotter/master/screenshot.png)
 
 ## To-do List
 
