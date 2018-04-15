@@ -4,8 +4,6 @@ This is a Chrome extension that allows you to create a Spotify playlist from
 a Turntable.fm room. Choose whether to open the Spotify web player or the
 desktop application.
 
-**[Available on the Chrome Web Store](https://chrome.google.com/webstore/detail/turntable-spotter/ckfagilmbmolhmefjbdlmojfidbknjgn)**
-
 ## Screenshots
 
 ![Screenshot of Turntable Spotter](https://raw.githubusercontent.com/cheshire137/chrome_turntable_spotter/master/screenshot.png)
